@@ -1,5 +1,7 @@
 serviceName: JokeGeneratorService
 
+endpoint: https://api.chucknorris.io/jokes/search
+
 logging:
   level: INFO
   loggers:
@@ -11,3 +13,7 @@ server:
   connector:
     type: http
     port: 8081
+
+jerseyClient:
+  timeout: 10000ms
+  connectionTimeout: 10000ms
