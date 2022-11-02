@@ -1,4 +1,13 @@
+serviceName: JokeGeneratorService
+
 logging:
   level: INFO
   loggers:
     com.quan: DEBUG
+
+server:
+  type: simple
+  applicationContextPath: /api
+  connector:
+    type: http
+    port: 8081

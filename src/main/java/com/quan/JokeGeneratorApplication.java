@@ -1,9 +1,12 @@
 package com.quan;
 
 import com.quan.configuration.JokeGeneratorConfiguration;
+import com.quan.health.PropertiesHealthCheck;
+import com.quan.health.ServiceHealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import ru.vyarus.dropwizard.guice.GuiceBundle;
 
 public class JokeGeneratorApplication extends Application<JokeGeneratorConfiguration> {
 
@@ -18,13 +21,24 @@ public class JokeGeneratorApplication extends Application<JokeGeneratorConfigura
 
     @Override
     public void initialize(final Bootstrap<JokeGeneratorConfiguration> bootstrap) {
-        // TODO: application initialization
+
+        // Using DI by using Guice.
+        bootstrap.addBundle(GuiceBundle.builder()
+                .enableAutoConfig(getClass().getPackage().getName())
+                .build());
     }
 
     @Override
     public void run(final JokeGeneratorConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+
+
+        // Register HealthCheck
+        ServiceHealthCheck healthCheck = new ServiceHealthCheck();
+        PropertiesHealthCheck propertiesHealthCheck = new PropertiesHealthCheck(configuration.getServiceName());
+
+        environment.healthChecks().register("service-health",healthCheck);
+        environment.healthChecks().register("properties-health",propertiesHealthCheck);
     }
 
 }
