@@ -27,7 +27,7 @@ public class JokeApiResource {
     }
 
     @GET
-    @RateLimiterByQueryRequired(parameter = "query", ratePerMinute = 5)
+    @RateLimiterByQueryRequired(parameter = "query", rateLimit = 5, timeLimit = 60)
     @Path("/generate")
     public Response generate(@QueryParam("query") Optional<String> keyword) {
         if(!keyword.isPresent() || StringUtils.isBlank(keyword.get())) {

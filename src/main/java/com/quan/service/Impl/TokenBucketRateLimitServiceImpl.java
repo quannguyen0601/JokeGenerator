@@ -8,15 +8,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class InMemoryRateLimitServiceImpl implements RateLimiterService {
+public class TokenBucketRateLimitServiceImpl implements RateLimiterService {
 
-    private static final Logger logger = LoggerFactory.getLogger(InMemoryRateLimitServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(TokenBucketRateLimitServiceImpl.class);
 
     private Map<String, RateLimiter> rateLimiterMap = new ConcurrentHashMap<>();
 
     @Override
-    public void setRateLimiter(String key, double ratePerSecond) {
-        RateLimiter rateLimiter =  RateLimiter.create(ratePerSecond);
+    public void create(String key, int timeLimit, int rateLimit) {
+        RateLimiter rateLimiter =  RateLimiter.create((double)rateLimit/timeLimit);
         rateLimiterMap.putIfAbsent(key, rateLimiter);
     }
 
