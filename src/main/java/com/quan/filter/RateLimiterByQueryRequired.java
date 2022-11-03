@@ -13,6 +13,4 @@ public @interface RateLimiterByQueryRequired {
     int rateLimit() default 5;
 
     int timeLimit() default 60;
-
-
 }

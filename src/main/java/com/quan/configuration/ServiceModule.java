@@ -13,8 +13,6 @@ import javax.inject.Named;
 import javax.ws.rs.client.Client;
 
 public class ServiceModule extends AbstractModule {
-
-
     @Override
     protected void configure() {
         bind(JokeService.class).to(JokeServiceImpl.class);

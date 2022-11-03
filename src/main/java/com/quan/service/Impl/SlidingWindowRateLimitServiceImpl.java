@@ -20,6 +20,28 @@ public class SlidingWindowRateLimitServiceImpl implements RateLimitService {
 
     private final Map<String, RequestData> requestTimeMap = new ConcurrentHashMap<>();
 
+
+    @Override
+    public void create(String key, int timeLimit, int rateLimit) {
+        if (!requestTimeMap.containsKey(key)) {
+            long currentTime = Instant.now().getEpochSecond() / NUMBER_OF_TIME_WINDOWS;
+
+            Map<Long, AtomicLong> individualUserHits = new HashMap<>();
+            individualUserHits.put(currentTime, new AtomicLong(0L));
+            requestTimeMap.put(key, new RequestData(individualUserHits, rateLimit, timeLimit));
+            logger.debug("CurrentTimeWindow:" + currentTime + " Result:true " + " Count:0");
+        }
+    }
+
+    @Override
+    public boolean tryAcquire(String key) {
+        long currentTime = Instant.now().getEpochSecond() / NUMBER_OF_TIME_WINDOWS;
+        //Reference for individual user count data
+        RequestData requestData = requestTimeMap.get(key);
+        return checkAndAddForExistingKeys(currentTime, requestData);
+
+    }
+
     public boolean checkAndAddForExistingKeys(long currentTimeWindow, RequestData requestData) {
         long countInOverallTime = removeOldEntriesForKey(currentTimeWindow, requestData);
 
@@ -47,28 +69,6 @@ public class SlidingWindowRateLimitServiceImpl implements RateLimitService {
         oldEntriesToBeDeleted.forEach(requestData.getTimeWindowVSCountMap().keySet()::remove);
         return overallCount;
     }
-
-    @Override
-    public void create(String key, int timeLimit, int rateLimit) {
-        if (!requestTimeMap.containsKey(key)) {
-            long currentTime = Instant.now().getEpochSecond() / NUMBER_OF_TIME_WINDOWS;
-
-            Map<Long, AtomicLong> individualUserHits = new HashMap<>();
-            individualUserHits.put(currentTime, new AtomicLong(0L));
-            requestTimeMap.put(key, new RequestData(individualUserHits, rateLimit, timeLimit));
-            logger.debug("CurrentTimeWindow:" + currentTime + " Result:true " + " Count:0");
-        }
-    }
-
-    @Override
-    public boolean tryAcquire(String key) {
-        long currentTime = Instant.now().getEpochSecond() / NUMBER_OF_TIME_WINDOWS;
-        //Reference for individual user count data
-        RequestData requestData = requestTimeMap.get(key);
-        return checkAndAddForExistingKeys(currentTime, requestData);
-
-    }
-
 
     static class RequestData {
 
