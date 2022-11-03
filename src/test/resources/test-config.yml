@@ -1,0 +1,19 @@
+serviceName: JokeGeneratorService
+
+endpoint: https://api.chucknorris.io/jokes/search
+
+logging:
+  level: INFO
+  loggers:
+    com.quan: DEBUG
+
+server:
+  type: simple
+  applicationContextPath: /api
+  connector:
+    type: http
+    port: 8081
+
+jerseyClient:
+  timeout: 10000ms
+  connectionTimeout: 10000ms
