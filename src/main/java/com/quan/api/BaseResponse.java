@@ -1,4 +1,4 @@
-package com.quan.model;
+package com.quan.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

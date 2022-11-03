@@ -1,21 +1,19 @@
-package com.quan.api;
+package com.quan.resources;
 
 
 import com.google.inject.Inject;
-import com.quan.model.BaseResponse;
+import com.quan.api.BaseResponse;
+import com.quan.filter.RateLimiterByQueryRequired;
 import com.quan.service.IJokeService;
 import com.quan.service.JokeService;
 import org.apache.commons.lang3.StringUtils;
-import ru.vyarus.dropwizard.guice.module.yaml.bind.Config;
 
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
-import java.util.Objects;
+import java.util.Optional;
 
 @Path("/joke")
 @Produces("application/json")
@@ -29,15 +27,14 @@ public class JokeApiResource {
     }
 
     @GET
+    @RateLimiterByQueryRequired(parameter = "query", ratePerMinute = 5)
     @Path("/generate")
-    public Response generate(@QueryParam("query") String keyword) {
-        if(StringUtils.isBlank(keyword)) {
+    public Response generate(@QueryParam("query") Optional<String> keyword) {
+        if(!keyword.isPresent() || StringUtils.isBlank(keyword.get())) {
             return Response.status(400).entity(new BaseResponse<>("Keyword is blank.")).build();
         }
-        IJokeService.BaseSearch searchQuery = new IJokeService.BaseSearch(keyword);
+        IJokeService.BaseSearch searchQuery = new IJokeService.BaseSearch(keyword.get());
 
-        return Response.ok(jokeService.getJokes(searchQuery)).build();
+        return Response.ok(new BaseResponse<>(jokeService.getJokes(searchQuery))).build();
     }
-
-
 }
