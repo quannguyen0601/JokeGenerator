@@ -1,14 +1,14 @@
 package com.quan.service.Impl;
 
 import com.google.common.util.concurrent.RateLimiter;
-import com.quan.service.RateLimiterService;
+import com.quan.service.RateLimitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TokenBucketRateLimitServiceImpl implements RateLimiterService {
+public class TokenBucketRateLimitServiceImpl implements RateLimitService {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenBucketRateLimitServiceImpl.class);
 

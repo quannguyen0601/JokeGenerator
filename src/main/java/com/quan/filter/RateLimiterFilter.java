@@ -1,7 +1,7 @@
 package com.quan.filter;
 
 import com.quan.api.BaseResponse;
-import com.quan.service.RateLimiterService;
+import com.quan.service.RateLimitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,10 +21,10 @@ public class RateLimiterFilter implements ContainerRequestFilter {
     private static final int TOO_MANY_REQUESTS = 429;
 
     private final ResourceInfo resourceInfo;
-    private final RateLimiterService rateLimiterService;
+    private final RateLimitService rateLimiterService;
     private final RateLimiterByQueryRequired rateLimitByQuery;
 
-    public RateLimiterFilter(RateLimiterByQueryRequired rateLimitByQuery, ResourceInfo resourceInfo, RateLimiterService rateLimiterService) {
+    public RateLimiterFilter(RateLimiterByQueryRequired rateLimitByQuery, ResourceInfo resourceInfo, RateLimitService rateLimiterService) {
         this.rateLimitByQuery = rateLimitByQuery;
         this.rateLimiterService = rateLimiterService;
         this.resourceInfo = resourceInfo;

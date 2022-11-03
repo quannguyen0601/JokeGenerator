@@ -1,7 +1,7 @@
 package com.quan.filter;
 
 import com.google.inject.Inject;
-import com.quan.service.RateLimiterService;
+import com.quan.service.RateLimitService;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.server.model.AnnotatedMethod;
 import org.slf4j.Logger;
@@ -17,10 +17,10 @@ import java.util.Objects;
 public class RateLimiterByQueryFeature implements DynamicFeature {
     private static final Logger logger = LoggerFactory.getLogger(RateLimiterByQueryFeature.class);
 
-    private final RateLimiterService rateLimiterService;
+    private final RateLimitService rateLimiterService;
 
     @Inject
-    public RateLimiterByQueryFeature(RateLimiterService rateLimiterService) {
+    public RateLimiterByQueryFeature(RateLimitService rateLimiterService) {
         this.rateLimiterService = rateLimiterService;
     }
 

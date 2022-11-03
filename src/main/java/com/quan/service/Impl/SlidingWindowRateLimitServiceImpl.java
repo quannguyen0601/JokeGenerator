@@ -1,6 +1,6 @@
 package com.quan.service.Impl;
 
-import com.quan.service.RateLimiterService;
+import com.quan.service.RateLimitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class SlidingWindowRateLimitServiceImpl implements RateLimiterService {
+public class SlidingWindowRateLimitServiceImpl implements RateLimitService {
 
     private static final Logger logger = LoggerFactory.getLogger(SlidingWindowRateLimitServiceImpl.class);
 

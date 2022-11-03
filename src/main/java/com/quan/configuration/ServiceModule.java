@@ -5,7 +5,7 @@ import com.google.inject.Provides;
 import com.quan.service.Impl.JokeServiceImpl;
 import com.quan.service.Impl.SlidingWindowRateLimitServiceImpl;
 import com.quan.service.JokeService;
-import com.quan.service.RateLimiterService;
+import com.quan.service.RateLimitService;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.setup.Environment;
 
@@ -19,7 +19,7 @@ public class ServiceModule extends AbstractModule {
     protected void configure() {
         bind(JokeService.class).to(JokeServiceImpl.class);
 //        bind(RateLimiterService.class).to(TokenBucketRateLimitServiceImpl.class);
-        bind(RateLimiterService.class).to(SlidingWindowRateLimitServiceImpl.class);
+        bind(RateLimitService.class).to(SlidingWindowRateLimitServiceImpl.class);
     }
 
     @Provides

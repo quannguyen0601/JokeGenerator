@@ -1,6 +1,6 @@
 package com.quan.service;
 
-public interface RateLimiterService {
+public interface RateLimitService {
 
     void create(String key, int timeLimit, int rateLimit);
 
