@@ -17,7 +17,7 @@ public abstract class JokeService implements IJokeService {
 
     protected Predicate<String> jokeFilter(BaseSearch input) {
         return Pattern
-                .compile("\\b"+input.getKeyword()+"\\b")
+                .compile("\\b" + input.getKeyword() + "\\b")
                 .asPredicate();
     }
 }

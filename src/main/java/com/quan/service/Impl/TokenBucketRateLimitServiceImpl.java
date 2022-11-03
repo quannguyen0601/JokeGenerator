@@ -12,17 +12,17 @@ public class TokenBucketRateLimitServiceImpl implements RateLimiterService {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenBucketRateLimitServiceImpl.class);
 
-    private Map<String, RateLimiter> rateLimiterMap = new ConcurrentHashMap<>();
+    private final Map<String, RateLimiter> rateLimiterMap = new ConcurrentHashMap<>();
 
     @Override
     public void create(String key, int timeLimit, int rateLimit) {
-        RateLimiter rateLimiter =  RateLimiter.create((double)rateLimit/timeLimit);
+        RateLimiter rateLimiter = RateLimiter.create((double) rateLimit / timeLimit);
         rateLimiterMap.putIfAbsent(key, rateLimiter);
     }
 
     @Override
     public boolean tryAcquire(String key) {
-       RateLimiter rateLimiter = rateLimiterMap.get(key);
-       return rateLimiter.tryAcquire();
+        RateLimiter rateLimiter = rateLimiterMap.get(key);
+        return rateLimiter.tryAcquire();
     }
 }

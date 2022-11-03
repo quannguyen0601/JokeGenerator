@@ -31,9 +31,9 @@ public class RateLimiterByQueryFeature implements DynamicFeature {
 
         RateLimiterByQueryRequired rateLimit = method.getAnnotation(RateLimiterByQueryRequired.class);
 
-        if(!Objects.isNull(rateLimit)) {
+        if (!Objects.isNull(rateLimit)) {
 
-            if(rateLimit.timeLimit() <= 0 || rateLimit.rateLimit() <= 0) {
+            if (rateLimit.timeLimit() <= 0 || rateLimit.rateLimit() <= 0) {
                 throw new IllegalArgumentException("RateLimiterByQueryRequired timeLimit must greater than 0. ");
             }
 

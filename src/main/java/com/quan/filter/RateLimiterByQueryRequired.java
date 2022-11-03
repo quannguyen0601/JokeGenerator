@@ -10,10 +10,9 @@ import java.lang.annotation.Target;
 public @interface RateLimiterByQueryRequired {
     String parameter();
 
-    int rateLimit() default  5;
+    int rateLimit() default 5;
 
     int timeLimit() default 60;
-
 
 
 }

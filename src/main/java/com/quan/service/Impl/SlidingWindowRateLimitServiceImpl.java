@@ -28,22 +28,21 @@ public class SlidingWindowRateLimitServiceImpl implements RateLimiterService {
             Map<Long, AtomicLong> timeWindowVSCountMap = requestData.getTimeWindowVSCountMap();
             long newCount = timeWindowVSCountMap.getOrDefault(currentTimeWindow, new AtomicLong(0)).longValue() + 1;
             timeWindowVSCountMap.put(currentTimeWindow, new AtomicLong(newCount));
-            logger.debug("CurrentTimeWindow:" + currentTimeWindow +" Result:true "+ " Count:"+countInOverallTime);
+            logger.debug("CurrentTimeWindow:" + currentTimeWindow + " Result:true " + " Count:" + countInOverallTime);
             return true;
         }
-        logger.debug("CurrentTimeWindow:" + currentTimeWindow +" Result:false "+ " Count:"+countInOverallTime);
+        logger.debug("CurrentTimeWindow:" + currentTimeWindow + " Result:false " + " Count:" + countInOverallTime);
         return false;
     }
-    // Remove Old Entries for the user and returns the current overall request count for the user
-    public long removeOldEntriesForKey(long currentTimeWindow, RequestData requestData)
-    {
-        List<Long> oldEntriesToBeDeleted=new ArrayList<>();
-        long overallCount=0L;
+
+    public long removeOldEntriesForKey(long currentTimeWindow, RequestData requestData) {
+        List<Long> oldEntriesToBeDeleted = new ArrayList<>();
+        long overallCount = 0L;
         for (Long timeWindow : requestData.getTimeWindowVSCountMap().keySet()) {
-            if ((currentTimeWindow - timeWindow) >= requestData.getTimeLimit()/NUMBER_OF_TIME_WINDOWS)
+            if ((currentTimeWindow - timeWindow) >= requestData.getTimeLimit() / NUMBER_OF_TIME_WINDOWS)
                 oldEntriesToBeDeleted.add(timeWindow);
             else
-                overallCount+=requestData.getTimeWindowVSCountMap().get(timeWindow).longValue();
+                overallCount += requestData.getTimeWindowVSCountMap().get(timeWindow).longValue();
         }
         oldEntriesToBeDeleted.forEach(requestData.getTimeWindowVSCountMap().keySet()::remove);
         return overallCount;
@@ -51,14 +50,13 @@ public class SlidingWindowRateLimitServiceImpl implements RateLimiterService {
 
     @Override
     public void create(String key, int timeLimit, int rateLimit) {
-        //Reference for individual user count data
         if (!requestTimeMap.containsKey(key)) {
             long currentTime = Instant.now().getEpochSecond() / NUMBER_OF_TIME_WINDOWS;
 
             Map<Long, AtomicLong> individualUserHits = new HashMap<>();
             individualUserHits.put(currentTime, new AtomicLong(0L));
             requestTimeMap.put(key, new RequestData(individualUserHits, rateLimit, timeLimit));
-            logger.debug("CurrentTimeWindow:" + currentTime +" Result:true "+ " Count:0");
+            logger.debug("CurrentTimeWindow:" + currentTime + " Result:true " + " Count:0");
         }
     }
 
@@ -78,10 +76,10 @@ public class SlidingWindowRateLimitServiceImpl implements RateLimiterService {
         private long rateLimit;
         private long timeLimit;
 
-        public RequestData(Map<Long, AtomicLong> timeWindowVSCountMap,long rateLimit,long timeLimit){
+        public RequestData(Map<Long, AtomicLong> timeWindowVSCountMap, long rateLimit, long timeLimit) {
             this.timeWindowVSCountMap = timeWindowVSCountMap;
             this.rateLimit = rateLimit;
-            this. timeLimit = timeLimit;
+            this.timeLimit = timeLimit;
         }
 
         public Map<Long, AtomicLong> getTimeWindowVSCountMap() {

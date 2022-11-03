@@ -2,8 +2,6 @@ package com.quan.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 public interface IJokeService {
     BaseResponse getJokes(BaseSearch query);
@@ -25,14 +23,14 @@ public interface IJokeService {
     }
 
     class BaseResponse {
+        private List<String> jokes = new ArrayList<>();
+
         public BaseResponse(List<String> jokes) {
             this.jokes = jokes;
         }
 
         public BaseResponse() {
         }
-
-        private List<String> jokes =  new ArrayList<>();
 
         public List<String> getJokes() {
             return jokes;

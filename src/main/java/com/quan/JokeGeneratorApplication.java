@@ -37,7 +37,7 @@ public class JokeGeneratorApplication extends Application<JokeGeneratorConfigura
         ServiceHealthCheck healthCheck = new ServiceHealthCheck();
         PropertiesHealthCheck propertiesHealthCheck = new PropertiesHealthCheck(configuration.getServiceName());
 
-        environment.healthChecks().register("service-health",healthCheck);
-        environment.healthChecks().register("properties-health",propertiesHealthCheck);
+        environment.healthChecks().register("service-health", healthCheck);
+        environment.healthChecks().register("properties-health", propertiesHealthCheck);
     }
 }

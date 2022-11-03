@@ -23,6 +23,7 @@ public class RateLimiterFilter implements ContainerRequestFilter {
     private final ResourceInfo resourceInfo;
     private final RateLimiterService rateLimiterService;
     private final RateLimiterByQueryRequired rateLimitByQuery;
+
     public RateLimiterFilter(RateLimiterByQueryRequired rateLimitByQuery, ResourceInfo resourceInfo, RateLimiterService rateLimiterService) {
         this.rateLimitByQuery = rateLimitByQuery;
         this.rateLimiterService = rateLimiterService;
@@ -33,14 +34,14 @@ public class RateLimiterFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext containerRequestContext) {
         MultivaluedMap<String, String> queryParameters = containerRequestContext.getUriInfo().getQueryParameters();
         List<String> values = queryParameters.get(rateLimitByQuery.parameter());
-        if(!Objects.isNull(values) && !values.isEmpty()) {
+        if (!Objects.isNull(values) && !values.isEmpty()) {
             //Get value first element in query
             String keyword = values.get(0);
             String rateLimitKey = getRateLimitKey(keyword);
 
             rateLimiterService.create(rateLimitKey, rateLimitByQuery.timeLimit(), rateLimitByQuery.rateLimit());
 
-            if(!rateLimiterService.tryAcquire(rateLimitKey)) {
+            if (!rateLimiterService.tryAcquire(rateLimitKey)) {
                 logger.debug("RateLimit hit. for method {} query {}", resourceInfo.getResourceMethod().getName(), keyword);
                 Exception cause = new IllegalAccessException("Slow down, too many request trying to search same query. " + resourceInfo.getResourceMethod().getName());
                 throw new WebApplicationException(cause,

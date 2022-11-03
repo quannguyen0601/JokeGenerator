@@ -33,7 +33,7 @@ public class JokeServiceImpl extends JokeService {
     protected BaseResponse doGetJokes(BaseSearch input) {
         Jokes jokes = getJokeFromApi(input);
 
-        if(Objects.isNull(jokes)) {
+        if (Objects.isNull(jokes)) {
             return new BaseResponse();
         }
 
@@ -42,8 +42,8 @@ public class JokeServiceImpl extends JokeService {
     }
 
     private Jokes getJokeFromApi(BaseSearch input) {
-        WebTarget webTarget = client.target(requestUri).queryParam("query",input.getKeyword());
-        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+        WebTarget webTarget = client.target(requestUri).queryParam("query", input.getKeyword());
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.get();
 
         if (response.getStatus() == 200) {
@@ -82,21 +82,19 @@ public class JokeServiceImpl extends JokeService {
 
     static class JokeResult {
 
-        public JokeResult() {
-        }
         @JsonProperty("created_at")
         @JsonFormat(pattern = "yyyy-mm-dd hh:mm:ss")
         private Date createdAt;
-
         @JsonProperty("id")
         private String id;
-
         @JsonProperty("value")
         private String value;
-
         @JsonProperty("updated_at")
         @JsonFormat(pattern = "yyyy-mm-dd hh:mm:ss")
         private Date updatedAt;
+
+        public JokeResult() {
+        }
 
         public Date getCreatedAt() {
             return createdAt;

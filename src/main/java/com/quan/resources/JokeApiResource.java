@@ -30,7 +30,7 @@ public class JokeApiResource {
     @RateLimiterByQueryRequired(parameter = "query", rateLimit = 5, timeLimit = 60)
     @Path("/generate")
     public Response generate(@QueryParam("query") Optional<String> keyword) {
-        if(!keyword.isPresent() || StringUtils.isBlank(keyword.get())) {
+        if (!keyword.isPresent() || StringUtils.isBlank(keyword.get())) {
             return Response.status(400).entity(new BaseResponse<>("Keyword is blank.")).build();
         }
         IJokeService.BaseSearch searchQuery = new IJokeService.BaseSearch(keyword.get());
