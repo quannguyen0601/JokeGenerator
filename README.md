@@ -3,7 +3,7 @@
 ## Description
 
 A backend API for getting jokes from https://api.chucknorris.io/.
-Project is implemented by using **Dropwizard** Framework and **Guice** DI. 
+Project is implemented by using the **Dropwizard** Framework and **Guice** DI. 
 
 1. Joke REST API:
 
@@ -15,13 +15,13 @@ Project is implemented by using **Dropwizard** Framework and **Guice** DI.
 
 3. Rate Limit:
 
-   Create a new annotation with name ```@RateLimiterByQueryRequired```.
+   Create a new annotation with name ```@RateLimitByQueryRequired```.
    Change the following parameters in annotation as per your need:
    1. **parameter**: name of parameter in query param
    2. **rateLimit**: Overall request count allowed in time limit.
    3. **timeLimit**: Overall time rate limit (Second).
 
-   About algorithm of rate limit, use Sliding Window. Check out ```SlidingWindowRateLimitservice```. This is subclass of ``RateLimitService``
+   About the algorithm of rate limit, use Sliding Window. Check out ```SlidingWindowRateLimitservice```. This is subclass of ``RateLimitService``
 
 
 How to start the JokeGenerator application
@@ -34,7 +34,7 @@ How to start the JokeGenerator application
 Health Check
 ---
 
-To see your applications health enter url `http://localhost:8081/healthcheck`
+To see your application health enter url `http://localhost:8081/healthcheck`
 
 Unit Test
 ---

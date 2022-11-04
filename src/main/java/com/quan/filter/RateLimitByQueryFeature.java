@@ -1,6 +1,7 @@
 package com.quan.filter;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.quan.service.RateLimitService;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.server.model.AnnotatedMethod;
@@ -14,34 +15,32 @@ import javax.ws.rs.ext.Provider;
 import java.util.Objects;
 
 @Provider
-public class RateLimiterByQueryFeature implements DynamicFeature {
-    private static final Logger logger = LoggerFactory.getLogger(RateLimiterByQueryFeature.class);
+public class RateLimitByQueryFeature implements DynamicFeature {
+    private static final Logger logger = LoggerFactory.getLogger(RateLimitByQueryFeature.class);
 
-    private final RateLimitService rateLimiterService;
+    private final RateLimitService rateLimitService;
 
     @Inject
-    public RateLimiterByQueryFeature(RateLimitService rateLimiterService) {
-        this.rateLimiterService = rateLimiterService;
+    public RateLimitByQueryFeature(@Named("SlidingWindowRateLimitService") RateLimitService rateLimitService) {
+        this.rateLimitService = rateLimitService;
     }
-
 
     @Override
     public void configure(ResourceInfo resourceInfo, FeatureContext featureContext) {
         AnnotatedMethod method = new AnnotatedMethod(resourceInfo.getResourceMethod());
-
-        RateLimiterByQueryRequired rateLimit = method.getAnnotation(RateLimiterByQueryRequired.class);
+        RateLimitByQueryRequired rateLimit = method.getAnnotation(RateLimitByQueryRequired.class);
 
         if (!Objects.isNull(rateLimit)) {
 
             if (rateLimit.timeLimit() <= 0 || rateLimit.rateLimit() <= 0) {
-                throw new IllegalArgumentException("RateLimiterByQueryRequired timeLimit must greater than 0. ");
+                throw new IllegalArgumentException("RateLimitByQueryRequired timeLimit must greater than 0. ");
             }
 
             if (StringUtils.isBlank(rateLimit.parameter())) {
-                throw new IllegalArgumentException("RateLimiterByQueryRequired requires not blank parameter. ");
+                throw new IllegalArgumentException("RateLimitByQueryRequired requires not blank parameter. ");
             }
 
-            featureContext.register(new RateLimiterFilter(rateLimit, resourceInfo, rateLimiterService));
+            featureContext.register(new RateLimitFilter(rateLimit, resourceInfo, rateLimitService));
         }
 
     }

@@ -2,8 +2,10 @@ package com.quan.configuration;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.name.Names;
 import com.quan.service.Impl.JokeServiceImpl;
 import com.quan.service.Impl.SlidingWindowRateLimitServiceImpl;
+import com.quan.service.Impl.TokenBucketRateLimitServiceImpl;
 import com.quan.service.JokeService;
 import com.quan.service.RateLimitService;
 import io.dropwizard.client.JerseyClientBuilder;
@@ -16,8 +18,10 @@ public class ServiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(JokeService.class).to(JokeServiceImpl.class);
-//        bind(RateLimiterService.class).to(TokenBucketRateLimitServiceImpl.class);
-        bind(RateLimitService.class).to(SlidingWindowRateLimitServiceImpl.class);
+        bind(RateLimitService.class).annotatedWith(Names.named("TokenBucketRateLimitService"))
+                .to(TokenBucketRateLimitServiceImpl.class);
+        bind(RateLimitService.class).annotatedWith(Names.named("SlidingWindowRateLimitService"))
+                .to(SlidingWindowRateLimitServiceImpl.class);
     }
 
     @Provides

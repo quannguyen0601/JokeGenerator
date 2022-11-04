@@ -3,7 +3,7 @@ package com.quan.resources;
 
 import com.google.inject.Inject;
 import com.quan.api.BaseResponse;
-import com.quan.filter.RateLimiterByQueryRequired;
+import com.quan.filter.RateLimitByQueryRequired;
 import com.quan.service.IJokeService;
 import com.quan.service.JokeService;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +27,7 @@ public class JokeApiResource {
     }
 
     @GET
-    @RateLimiterByQueryRequired(parameter = "query", rateLimit = 5, timeLimit = 60)
+    @RateLimitByQueryRequired(parameter = "query", rateLimit = 8, timeLimit = 60)
     @Path("/generate")
     public Response generate(@QueryParam("query") Optional<String> keyword) {
         if (!keyword.isPresent() || StringUtils.isBlank(keyword.get())) {

@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface RateLimiterByQueryRequired {
+public @interface RateLimitByQueryRequired {
     String parameter();
 
     int rateLimit() default 5;

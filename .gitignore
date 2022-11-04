@@ -2,3 +2,5 @@
 JokeGenerator.iml
 .idea/**
 target/**
+#maven
+dependency-reduced-pom.xml
