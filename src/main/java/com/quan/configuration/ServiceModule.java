@@ -15,6 +15,10 @@ import javax.inject.Named;
 import javax.ws.rs.client.Client;
 
 public class ServiceModule extends AbstractModule {
+
+    /**
+     * Configure DI for the projects.
+     */
     @Override
     protected void configure() {
         bind(JokeService.class).to(JokeServiceImpl.class);
